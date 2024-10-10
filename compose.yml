@@ -1,0 +1,27 @@
+services:
+  feed:
+    build: ./feed
+    environment:
+      - JWT_SECRET=very-secret
+
+  auth:
+    build: ./auth
+    environment:
+      - JWT_SECRET=very-secret
+
+  likes:
+    build: ./likes
+    environment:
+      - JWT_SECRET=very-secret
+
+  api:
+    restart: always
+    image: nginx:1-alpine
+    ports:
+      - 8000:80
+    volumes:
+      - ./api/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - feed
+      - auth
+      - likes
